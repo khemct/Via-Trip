@@ -28,7 +28,11 @@ services:
       db:
         condition: service_healthy
     environment:
-      DB_URL: postgresql://postgres:via_trip_pw@db:5432/via_trip
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: via_trip
+      DB_USER: postgres
+      DB_PASS: via_trip_pw
       GOOGLE_MAPS_SERVER_KEY: ${GOOGLE_MAPS_SERVER_KEY}
       JWT_SECRET: ${JWT_SECRET}
       PORT: 5000

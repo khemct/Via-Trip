@@ -14,6 +14,9 @@ app.use(cors({
 }));
 app.use(express.json());
 
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
+
 app.get('/api/health', async (req, res) => {
   try {
     const result = await db.query('SELECT NOW()');
@@ -24,6 +27,20 @@ app.get('/api/health', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ status: 'error', message: err.message });
+  }
+});
+
+app.get('/api/db-test', async (req, res) => {
+  try {
+    const result = await db.query('SELECT 1 as test');
+    res.json({ status: 'ok', result: result.rows[0] });
+  } catch (err) {
+    res.status(500).json({ 
+      status: 'error', 
+      message: err.message,
+      code: err.code,
+      detail: err.detail
+    });
   }
 });
 
