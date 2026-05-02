@@ -1,13 +1,8 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useAuth } from '../context/AuthContext'
 
 function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    setIsLoggedIn(!!token)
-  }, [])
+  const { user, logout } = useAuth()
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -15,10 +10,19 @@ function Home() {
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="text-2xl font-bold text-blue-600">Via-Trip</h1>
           <div className="space-x-4">
-            {isLoggedIn ? (
-              <Link to="/trip-setup" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                Plan New Trip
-              </Link>
+            {user ? (
+              <>
+                <span className="text-gray-700">Hi, {user.name}</span>
+                <Link to="/trip-setup" className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                  Plan New Trip
+                </Link>
+                <button
+                  onClick={logout}
+                  className="text-gray-600 hover:text-blue-600"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <Link to="/login" className="text-gray-600 hover:text-blue-600">Login</Link>

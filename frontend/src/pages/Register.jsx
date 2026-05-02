@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import api from '../services/api'
 
 function Register() {
@@ -11,13 +12,13 @@ function Register() {
   })
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       const { data } = await api.post('/auth/register', form)
-      localStorage.setItem('token', data.token)
-      localStorage.setItem('user', JSON.stringify(data.user))
+      login(data.token, data.user)
       navigate('/trip-setup')
     } catch (err) {
       setError(err.response?.data?.error || 'Registration failed')
